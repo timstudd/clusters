@@ -167,7 +167,7 @@ func (c *kmeansClusterer) Predict(p []float64) int {
 		}
 	}
 
-	return l
+	return l + 1
 }
 
 func (c *kmeansClusterer) Online(observations chan []float64, done chan struct{}) chan *HCEvent {
