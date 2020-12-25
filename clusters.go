@@ -53,6 +53,12 @@ type HardClusterer interface {
 	// the returned channel.
 	Online(observations chan []float64, done chan struct{}) chan *HCEvent
 
+	// DumpClustererState dumps the current state of the clusterer in msgpack encoding.
+	DumpClustererState() ([]byte, error)
+
+	// DumpClustererState loads the state of the clusterer from msgpack encoded state.
+	LoadClustererState(dump []byte) error
+
 	// Implement common operation
 	Clusterer
 }

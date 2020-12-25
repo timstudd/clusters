@@ -1,6 +1,7 @@
 package clusters
 
 import (
+	"errors"
 	"math"
 	"sync"
 )
@@ -82,6 +83,14 @@ func OPTICS(minpts int, eps, xi float64, workers int, distance DistanceFunc) (Ha
 		x:        1 - xi,
 		distance: d,
 	}, nil
+}
+
+func (c *opticsClusterer) DumpClustererState() ([]byte, error) {
+	return nil, errors.New("not implemeneted")
+}
+
+func (c *opticsClusterer) LoadClustererState(_ []byte) error {
+	return errors.New("not implemeneted")
 }
 
 func (c *opticsClusterer) IsOnline() bool {

@@ -1,6 +1,7 @@
 package clusters
 
 import (
+	"errors"
 	"sync"
 )
 
@@ -59,6 +60,14 @@ func DBSCAN(minpts int, eps float64, workers int, distance DistanceFunc) (HardCl
 		eps:      eps,
 		distance: d,
 	}, nil
+}
+
+func (c *dbscanClusterer) DumpClustererState() ([]byte, error) {
+	return nil, errors.New("not implemeneted")
+}
+
+func (c *dbscanClusterer) LoadClustererState(_ []byte) error {
+	return errors.New("not implemeneted")
 }
 
 func (c *dbscanClusterer) IsOnline() bool {

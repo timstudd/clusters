@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/vmihailenco/msgpack/v5"
 	"gonum.org/v1/gonum/floats"
 )
 
@@ -36,6 +37,34 @@ type kmeansClusterer struct {
 
 	// dataset
 	d [][]float64
+}
+
+type kmeansClusterState struct {
+	A, B []int
+	M, N [][]float64
+	D    [][]float64
+}
+
+func (c *kmeansClusterer) DumpClustererState() ([]byte, error) {
+	return msgpack.Marshal(&kmeansClusterState{
+		A: c.a, B: c.b,
+		M: c.m, N: c.n,
+		D: c.d,
+	})
+}
+
+func (c *kmeansClusterer) LoadClustererState(dump []byte) error {
+	var state kmeansClusterState
+	err := msgpack.Unmarshal(dump, &state)
+	if err != nil {
+		return err
+	}
+
+	c.a, c.b = state.A, state.B
+	c.m, c.n = state.M, state.N
+	c.d = state.D
+
+	return nil
 }
 
 // Implementation of k-means++ algorithm with online learning
