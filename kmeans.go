@@ -1,7 +1,6 @@
 package clusters
 
 import (
-	"fmt"
 	"log"
 	"math"
 	"math/rand"
@@ -128,6 +127,7 @@ func (c *kmeansClusterer) Learn(data [][]float64) error {
 	c.initializeMeansWithData()
 
 	for i := 0; i < c.iterations && c.counter != c.threshold; i++ {
+		log.Println("Starting learn iteration:", i)
 		c.run()
 		c.check()
 	}
@@ -265,7 +265,6 @@ func (c *kmeansClusterer) initializeMeansWithData() {
 	c.m[0] = c.d[rand.Intn(len(c.d)-1)]
 
 	for i := 1; i < c.number; i++ {
-		fmt.Printf("\rAt %.2f", (float32(i) / float32(c.number) * 100))
 		s = 0
 		t = 0
 		for j := 0; j < len(c.d); j++ {
@@ -289,7 +288,6 @@ func (c *kmeansClusterer) initializeMeansWithData() {
 
 		c.m[i] = c.d[k]
 	}
-	fmt.Print("\r\n")
 
 	for i := 0; i < c.number; i++ {
 		c.n[i] = make([]float64, len(c.m[0]))
@@ -310,7 +308,6 @@ func (c *kmeansClusterer) initializeMeans() {
 }
 
 func (c *kmeansClusterer) run() {
-	log.Println("Starting learn iteration")
 	var (
 		l, k, n int = len(c.m[0]), 0, 0
 		m, d    float64
@@ -321,7 +318,6 @@ func (c *kmeansClusterer) run() {
 	}
 
 	for i := 0; i < len(c.d); i++ {
-		fmt.Printf("\rAt %.2f", (float32(i) / float32(len(c.d)) * 100))
 		m = c.distance(c.d[i], c.m[0])
 		n = 0
 
@@ -343,7 +339,6 @@ func (c *kmeansClusterer) run() {
 
 		floats.Add(c.n[n], c.d[i])
 	}
-	fmt.Print("\r\n")
 
 	for i := 0; i < c.number; i++ {
 		floats.Scale(1/float64(c.b[i]), c.n[i])
